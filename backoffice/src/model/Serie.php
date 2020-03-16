@@ -1,15 +1,15 @@
 <?php
 
 
-namespace lbs\command\model;
+namespace geoquizz\app\model;
 
 use Illuminate\Database\Eloquent\Model;
 
 
-class Client extends Model
+class Serie extends Model
 {
-    protected $table = 'client';
+    protected $table = 'serie';
     protected $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = false;
     public $incrementing = true;
 }

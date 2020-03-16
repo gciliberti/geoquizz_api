@@ -1,5 +1,5 @@
 <?php
-namespace lbs\command\utils;
+namespace geoquizz\app\utils;
 
 use Carbon\Carbon;
 use \Psr\Http\Message\ResponseInterface as Response;
