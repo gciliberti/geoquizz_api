@@ -1,8 +1,7 @@
 <?php
-namespace lbs\command\utils;
+namespace geoquizz\app\utils;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use lbs\command\model\Commande;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
