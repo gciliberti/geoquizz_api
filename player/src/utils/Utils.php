@@ -1,5 +1,5 @@
 <?php
-namespace lbs\command\utils;
+namespace geoquizz\app\utils;
 
 use GuzzleHttp\Client;
 
