@@ -1,7 +1,7 @@
 <?php
 
 
-namespace lbs\command\model;
+namespace geoquizz\app\model;
 
 use Illuminate\Database\Eloquent\Model;
 

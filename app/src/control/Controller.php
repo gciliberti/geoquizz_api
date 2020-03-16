@@ -1,5 +1,5 @@
 <?php
-namespace geoquizz\backoffice\control;
+namespace geoquizz\app\control;
 
 use \Firebase\JWT\JWT;
 use Ramsey\Uuid\Uuid;

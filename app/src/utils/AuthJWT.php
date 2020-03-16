@@ -1,7 +1,7 @@
 <?php
 
 
-namespace lbs\command\utils;
+namespace geoquizz\app\utils;
 use lbs\command\model\Client;
 
 use\Psr\Http\Message\ServerRequestInterface as Request;
