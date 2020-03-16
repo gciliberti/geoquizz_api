@@ -6,10 +6,10 @@ namespace geoquizz\app\model;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Client extends Model
+class photo extends Model
 {
-    protected $table = 'client';
+    protected $table = 'photo';
     protected $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = false;
     public $incrementing = true;
 }
