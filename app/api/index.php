@@ -16,9 +16,13 @@ DatabaseConnection::startEloquent(($app->getContainer())->settings['dbconf']);
 $app->get('/commandes[/]', lbs\command\control\PartieController::class . ':getCommands');
 **/
 
-$app->post('/photo[/]', geoquizz\app\control\Controller::class . ':addPhoto');
+$app->post('/photo[/]', geoquizz\app\control\ControllerPhoto::class . ':addPhoto');
 
-$app->post('/photo/serie[/]', geoquizz\app\control\Controller::class . ':addPhotoSerie');
+$app->post('/photo/serie[/]', geoquizz\app\control\ControllerPhoto::class . ':addPhotoSerie');
+
+$app->get('/series[/]', geoquizz\app\control\ControllerSerie::class . ':getSeries');
+
+$app->post('/series[/]', geoquizz\app\control\ControllerSerie::class . ':addSerie');
 
 
 

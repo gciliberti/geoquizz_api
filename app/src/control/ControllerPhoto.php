@@ -1,16 +1,13 @@
 <?php
 namespace geoquizz\app\control;
 
-use \Firebase\JWT\JWT;
 use geoquizz\app\model\photo;
 use geoquizz\app\model\photo_serie;
 use geoquizz\app\utils\Writer;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
-class Controller {
+class ControllerPhoto {
     protected $container;
 
     public function __construct(\Slim\Container $container = null) {
