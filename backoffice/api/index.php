@@ -1,8 +1,12 @@
 <?php
+
 require_once "../src/vendor/autoload.php";
 
-use DavidePastore\Slim\Validation\Validation;
-use \lbs\command\database\DatabaseConnection;
+use geoquizz\app\database\DatabaseConnection;
+
+use \Respect\Validation\Validator as v;
+use \DavidePastore\Slim\Validation\Validation as Validation;
+
 
 $settings = require_once "../conf/settings.php";
 $errorsHandlers = require_once "../conf/errorsHandlers.php";
@@ -12,9 +16,15 @@ $container = new \Slim\Container($app_config);
 $app = new \Slim\App($container);
 
 DatabaseConnection::startEloquent(($app->getContainer())->settings['dbconf']);
-/**Exemple
-$app->get('/commandes[/]', lbs\command\control\Controller::class . ':getCommands');
-**/
 
+$postSerieValidator = [
+    'ville' => v::stringType(),
+    'map_refs' =>v::numeric(),
+    'dist' =>v::numeric()->length(1, 1)
+];
+
+
+$app->get('/series[/]', geoquizz\app\control\SerieController::class . ':getSeries');
+$app->post('/series/serie[/]', geoquizz\app\control\SerieController::class . ':createSerie')->add(new Validation($postSerieValidator));
 
 $app->run();
