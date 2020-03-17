@@ -1,8 +1,8 @@
 <?php
 
 
-namespace lbs\command\utils;
-use lbs\command\model\Client;
+namespace geoquizz\app\utils;
+use geoquizz\app\Client;
 
 use\Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -10,7 +10,7 @@ use \Firebase\JWT\JWT;
 use \Firebase\JWT\ExpiredException;
 use \Firebase\JWT\SignatureInvalidException;
 use \Firebase\JWT\BeforeValidException;
-use lbs\command\utils\Writer;
+use geoquizz\app\Writer;
 use \DomainException;
 
 

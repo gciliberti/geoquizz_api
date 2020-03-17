@@ -2,7 +2,7 @@
 require_once "../src/vendor/autoload.php";
 
 use DavidePastore\Slim\Validation\Validation;
-use \lbs\command\database\DatabaseConnection;
+use geoquizz\app\database\DatabaseConnection;
 
 $settings = require_once "../conf/settings.php";
 $errorsHandlers = require_once "../conf/errorsHandlers.php";
@@ -12,9 +12,9 @@ $container = new \Slim\Container($app_config);
 $app = new \Slim\App($container);
 
 DatabaseConnection::startEloquent(($app->getContainer())->settings['dbconf']);
-/**Exemple
-$app->get('/commandes[/]', lbs\command\control\Controller::class . ':getCommands');
-**/
+
+$app->post('/partie[/]', geoquizz\app\control\PartieController::class . ':creerPartie');
+$app->get('/series[/]', geoquizz\app\control\SerieController::class . ':getSeries');
 
 
 $app->run();

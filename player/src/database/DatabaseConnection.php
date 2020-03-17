@@ -1,5 +1,5 @@
 <?php
-namespace lbs\command\database;
+namespace geoquizz\app\database;
 
 class DatabaseConnection {
     public static function startEloquent($file_path) {
