@@ -18,6 +18,8 @@ $app->get('/commandes[/]', lbs\command\control\PartieController::class . ':getCo
 
 $app->post('/photo[/]', geoquizz\app\control\Controller::class . ':addPhoto');
 
+$app->post('/photo/serie[/]', geoquizz\app\control\Controller::class . ':addPhotoSerie');
+
 
 
 $app->run();
