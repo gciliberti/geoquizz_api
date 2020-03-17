@@ -25,7 +25,7 @@ class SerieController
     public function getSeries(Request $request, Response $response, $args)
     {
         try {
-            $series = Serie::query()->get();
+            $series = Serie::orderBy("ville")->get();
             $seriesarray = array();
 
             foreach ($series as $serie){
@@ -42,7 +42,7 @@ class SerieController
         } catch (\Exception $e) {
             $resparray = array(
                 "error" => 500,
-                "message" => "internal server error",
+                "message" =>var_dump($e->getMessage()),
             );
 
             $response = Writer::jsonResponse($response, 500, $resparray);

@@ -1,4 +1,5 @@
 <?php
+
 namespace geoquizz\app\control;
 
 use geoquizz\app\model\Serie;
@@ -10,17 +11,21 @@ use \Firebase\JWT\JWT;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
-class PartieController {
+class PartieController
+{
     const CREEE = 0;
     const EN_COURS = 1;
     const TERMINEE = 2;
     protected $container;
 
-    public function __construct(\Slim\Container $container = null) {
+    public function __construct(\Slim\Container $container = null)
+    {
         $this->container = $container;
     }
-    public function creerPartie(Request $request, Response $response, $args) {
-        try{
+
+    public function creerPartie(Request $request, Response $response, $args)
+    {
+        try {
 
             $contenu = $request->getParsedBody();
             $serie = Serie::findOrFail($contenu["serie"]);
@@ -28,11 +33,11 @@ class PartieController {
             $partie = new Partie();
             $partie->token = Writer::generateToken();
             $partie->nb_photos = 0;
-            $partie->status = self::CREEE;
+            $partie->status = self::EN_COURS;
             $partie->score = 0;
             $partie->joueur = $contenu["pseudo"];
 
-            foreach ($photos as $photo){
+            foreach ($photos as $photo) {
                 unset($photo["pivot"]);
                 unset($photo["created_at"]);
             }
@@ -41,24 +46,52 @@ class PartieController {
 
 
             $resparray = array(
+                "id" => $partie->id,
                 "token" => $partie->token,
                 "status" => $partie->status,
                 "photos" => $photos,
             );
 
-            $response = Writer::jsonResponse($response,201,$resparray);
+            $response = Writer::jsonResponse($response, 201, $resparray);
 
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             $resparray = array(
                 "error" => 500,
                 "message" => $e->getMessage(),
 
             );
 
-            $response = Writer::jsonResponse($response,500,$resparray);
+            $response = Writer::jsonResponse($response, 500, $resparray);
         }
 
 
         return $response;
+    }
+
+    public function updatePartie(Request $request, Response $response, $args)
+    {
+        $input = $request->getParsedBody();
+
+        try{
+            $partie = Partie::query()->where('id','=',$input["id"])->firstOrFail();
+        } catch (\Exception $e){
+            $response = Writer::jsonResponse($response, 404,array("error"=>404,"message"=>"Partie non trouvé"));
+            return $response;
+        }
+
+        if(isset($input["id"]) && isset($input["score"]) && $args["token"] == $partie->token){
+            try{
+
+                $partie->score = $input["score"];
+                $partie->status = self::TERMINEE;
+                $partie->saveOrFail();
+
+                $response = Writer::jsonResponse($response, 204,array("error"=>404,"message"=>"Partie non trouvé"));
+                return $response;
+            } catch (\Exception $e){
+                $response = Writer::jsonResponse($response, 404,array("error"=>404,"message"=>"Partie non trouvé"));
+                return $response;
+            }
+        }
     }
 }
