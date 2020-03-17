@@ -32,7 +32,13 @@ class PartieController {
             $partie->score = 0;
             $partie->joueur = $contenu["pseudo"];
 
+            foreach ($photos as $photo){
+                unset($photo["pivot"]);
+                unset($photo["created_at"]);
+            }
+
             $partie->saveOrFail();
+
 
             $resparray = array(
                 "token" => $partie->token,
