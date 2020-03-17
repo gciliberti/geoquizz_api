@@ -42,7 +42,7 @@ class SerieController
         } catch (\Exception $e) {
             $resparray = array(
                 "error" => 500,
-                "message" => "internal server error",
+                "message" =>var_dump($e->getMessage()),
             );
 
             $response = Writer::jsonResponse($response, 500, $resparray);
