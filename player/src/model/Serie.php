@@ -11,7 +11,7 @@ class Serie extends Model
     protected $table = 'serie';
     protected $primaryKey = 'id';
     public $timestamps = false;
-    public $incrementing = true;
+    public $incrementing = false;
 
     public function photos(){
         return $this->belongsToMany('geoquizz\app\model\Photo')

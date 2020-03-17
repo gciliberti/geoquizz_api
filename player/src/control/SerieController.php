@@ -25,7 +25,7 @@ class SerieController
     public function getSeries(Request $request, Response $response, $args)
     {
         try {
-            $series = Serie::query()->get();
+            $series = Serie::orderBy("ville")->get();
             $seriesarray = array();
 
             foreach ($series as $serie){

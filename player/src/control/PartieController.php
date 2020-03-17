@@ -28,7 +28,7 @@ class PartieController {
             $partie = new Partie();
             $partie->token = Writer::generateToken();
             $partie->nb_photos = 0;
-            $partie->status = self::CREEE;
+            $partie->status = self::EN_COURS;
             $partie->score = 0;
             $partie->joueur = $contenu["pseudo"];
 
@@ -38,6 +38,7 @@ class PartieController {
             }
 
             $partie->saveOrFail();
+
 
 
             $resparray = array(
