@@ -3,7 +3,7 @@ namespace geoquizz\app\control;
 
 use \Firebase\JWT\JWT;
 use geoquizz\app\model\photo;
-use geoquizz\app\model\Photo_Serie;
+use geoquizz\app\model\photo_serie;
 use geoquizz\app\utils\Writer;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
