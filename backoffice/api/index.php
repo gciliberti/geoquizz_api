@@ -20,11 +20,19 @@ DatabaseConnection::startEloquent(($app->getContainer())->settings['dbconf']);
 $postSerieValidator = [
     'ville' => v::stringType(),
     'map_refs' =>v::numeric(),
-    'dist' =>v::numeric()->length(1, 1)
+    'dist' =>v::numeric()->length(1, 1),
+    "photos" => v::arrayType()
 ];
 
 
 $app->get('/series[/]', geoquizz\app\control\SerieController::class . ':getSeries');
 $app->post('/series/serie[/]', geoquizz\app\control\SerieController::class . ':createSerie')->add(new Validation($postSerieValidator));
+
+$app->get('/photos[/]', \geoquizz\app\control\Photocontroller::class . ':getPhotos');
+$app->post('/photos/photo[/]',\geoquizz\app\control\Photocontroller::class . ':postPhoto' );
+
+
+
+
 
 $app->run();

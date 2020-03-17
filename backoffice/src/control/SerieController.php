@@ -36,14 +36,13 @@ class SerieController
         if ($request->getAttribute('has_errors')) {
             $errors = $request->getAttribute('errors');
             foreach ($errors as $key => $listerrorAttribute) {
-
                 echo "<strong>" . $key . " : </strong>  ";
                 //echo "<br/>";
                 foreach ($listerrorAttribute as $error) {
                     echo $error;
                     echo "<br/>";
                 }
-            }
+            }   
         } else {
 
             $req_body = $request->getBody()->getContents();

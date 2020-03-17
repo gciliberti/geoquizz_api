@@ -6,7 +6,7 @@ namespace geoquizz\app\model;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Photo_Serie extends Pivot
+class photo_serie extends Pivot
 {
     protected $table ='photo_serie';
     public $timestamps = false;
