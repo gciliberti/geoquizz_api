@@ -67,6 +67,7 @@ class ControllerMap
                 $map->saveOrFail();
 
                 $element = [
+                    "id" => $map->id,
                     "lat" => $map->lat,
                     "lng" => $map->lng,
                     "zoom" => $map->zoom,
