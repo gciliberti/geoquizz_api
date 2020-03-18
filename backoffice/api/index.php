@@ -20,6 +20,13 @@ $postSerieValidator = [
     'dist' => v::numeric()->length(1, 1),
     "photos" => v::arrayType()
 ];
+
+$updateSerieValidator = [
+    'ville' => v::stringType()->alpha(),
+    'map_refs' => v::optional(v::numeric()),
+    'dist' => v::numeric()->length(1, 1),
+];
+
 DatabaseConnection::startEloquent(($app->getContainer())->settings['dbconf']);
 
 $app->options('/{routes:.+}', function ($request, $response, $args) {
@@ -37,10 +44,14 @@ $app->add(function ($req, $res, $next) {
 
 $app->get('/series[/]', geoquizz\app\control\SerieController::class . ':getSeries');
 $app->post('/series/serie[/]', geoquizz\app\control\SerieController::class . ':createSerie')->add(new Validation($postSerieValidator));
+$app->put('/series/serie/{id_serie}[/]', geoquizz\app\control\SerieController::class . ':updateSerie')->add(new Validation($updateSerieValidator));
+
 
 $app->get('/photos[/]', \geoquizz\app\control\Photocontroller::class . ':getPhotos');
-$app->get('/photos/{id}', \geoquizz\app\control\Photocontroller::class . ':getPhotosSerie');
+$app->get('/photos/{id_serie}', \geoquizz\app\control\Photocontroller::class . ':getPhotosSerie');
+$app->post('/photo/serie[/]', \geoquizz\app\control\Photocontroller::class . ':postPhotosSerie');
 $app->post('/photos/photo[/]', \geoquizz\app\control\Photocontroller::class . ':postPhoto');
+$app->delete('/photo/{id_photo}', \geoquizz\app\control\Photocontroller::class . ':deletePhoto');
 
 
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($req, $res) {

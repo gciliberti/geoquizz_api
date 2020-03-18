@@ -35,12 +35,12 @@ class Photocontroller
 
     public static function getPhotosSerie(Request $request, Response $response, $args)
     {
-        if (isset($args['id'])) {
+        if (isset($args['id_serie'])) {
 
 
             try {
 
-                $serie = Serie::findOrFail($args["id"]);
+                $serie = Serie::findOrFail($args["id_serie"]);
                 $photos = $serie->photos()->get();
                 foreach ($photos as $photo) {
                     unset($photo["pivot"]);
@@ -111,6 +111,79 @@ class Photocontroller
                 "error" => 400,
                 "message" => "Au moins un champ n'a pas été rempli."
             ]));
+        }
+
+        return $response;
+    }
+
+
+    public static function postPhotosSerie(Request $request, Response $response, $args)
+    {
+        $input = $request->getParsedBody();
+        if (isset($input['photo_id']) && isset($input['serie_id'])) {
+            try {
+
+                //On enregistre l'image dans la bdd avec l'url généré par cloudinary
+                $photoSerie = new photo_serie();
+                $photoSerie->photo_id = filter_var($input['photo_id'], FILTER_SANITIZE_NUMBER_INT);
+                $photoSerie->serie_id = filter_var($input['serie_id'], FILTER_SANITIZE_STRING);
+                $photoSerie->saveOrFail();
+
+                $element = [
+                    "photo_id" => $photoSerie->photo_id,
+                    "serie_id" => $photoSerie->serie_id,
+                ];
+                $response = Writer::jsonResponse($response, 200, $element);
+
+            } catch (\Throwable $exception) {
+                $response = $response->withStatus(500)->withHeader('Content-Type', 'application/json;charset=utf-8');
+                $response->getBody()->write(json_encode([
+                    "type" => "error",
+                    "error" => 500,
+                    "message" => $exception->getMessage()
+                ]));
+            }
+        } else {
+            $response = $response->withStatus(400)->withHeader('Content-Type', 'application/json;charset=utf-8');
+            $response->getBody()->write(json_encode([
+                "type" => "error",
+                "error" => 400,
+                "message" => "Au moins un champ n'a pas été rempli."
+            ]));
+        }
+
+        return $response;
+    }
+
+    public static function deletePhoto(Request $request, Response $response, $args)
+    {
+        if (isset($args['id_photo'])) {
+            try {
+                $photo = Photo::query()->where('id', '=', $args['id_photo'])->firstOrFail();
+            } catch (\Exception $e) {
+
+                $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "Photo non trouvé"));
+                return $response;
+            }
+
+            $photo->delete();
+
+            $response->getBody()->write(json_encode([
+                "type" => "success",
+                "error" => 200,
+                "message" => "photo supprimé"
+            ]));
+            return $response;
+
+
+        } else {
+            $response = $response->withStatus(400)->withHeader('Content-Type', 'application/json;charset=utf-8');
+            $response->getBody()->write(json_encode([
+                "type" => "error",
+                "error" => 400,
+                "message" => "veuillez passer l'identifiant d'une photo"
+            ]));
+
         }
 
         return $response;

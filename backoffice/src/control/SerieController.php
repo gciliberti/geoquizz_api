@@ -34,15 +34,19 @@ class SerieController
     {
 
         if ($request->getAttribute('has_errors')) {
-            $errors = $request->getAttribute('errors');
-            foreach ($errors as $key => $listerrorAttribute) {
-                echo "<strong>" . $key . " : </strong>  ";
-                //echo "<br/>";
-                foreach ($listerrorAttribute as $error) {
-                    echo $error;
-                    echo "<br/>";
-                }
-            }   
+//            $errors = $request->getAttribute('errors');
+//            foreach ($errors as $key => $listerrorAttribute) {
+//                echo "<strong>" . $key . " : </strong>  ";
+//                //echo "<br/>";
+//                foreach ($listerrorAttribute as $error) {
+//                    echo $error;
+//                    echo "<br/>";
+//                }
+//            }
+
+            $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "Merci de transmettre des données valide"));
+            return $response;
+
         } else {
 
             $req_body = $request->getBody()->getContents();
@@ -77,11 +81,80 @@ class SerieController
 
             $resparray = [
                 "series" => $serie,
-                "photo_serie"=>$photo_serie
+                "photo_serie" => $photo_serie
             ];
             $response = Writer::jsonResponse($response, 200, $resparray);
 
         }
     }
+
+    public static function updateSerie(Request $request, Response $response, $args)
+    {
+
+        if ($request->getAttribute('has_errors')) {
+
+            $errors = $request->getAttribute('errors');
+            var_dump($errors);
+
+
+        } else {
+            $body = $request->getParsedBody();
+            if (isset($args['id_serie'])) {
+                try {
+                    $serie = Serie::query()->where('id', '=', $args['id_serie'])->firstOrFail();
+
+                } catch (\Exception $e) {
+                    $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "Serie non trouvé"));
+                    return $response;
+                }
+
+
+                if (isset($body['ville'])) {
+                    $serie->ville = filter_var($body['ville'], FILTER_SANITIZE_STRING);
+
+                };
+
+
+                if (isset($body['dist'])) {
+                    $serie->dist = filter_var($body['dist'], FILTER_SANITIZE_NUMBER_INT);
+                };
+
+                $serie->saveOrFail();
+
+
+                $resparray = [
+                    "serie" => $serie,
+                ];
+                $response = Writer::jsonResponse($response, 200, $resparray);
+                return $response;
+
+
+            } else {
+                $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "Merci de transmettre des données valide"));
+                return $response;
+            }
+
+
+//            if (isset($body["id"]) && isset($body["score"])) {
+//                try {
+//                    if ($partie->status == self::EN_COURS) {
+////                        $partie->score = $input["score"];
+////                        $partie->status = self::TERMINEE;
+////                        $partie->saveOrFail();
+//
+//                        $response = Writer::jsonResponse($response, 204, array("error" => 204, "message" => "Score sauvegardé"));
+//                        return $response;
+//                    } else {
+//                        throw new Exception('Partie terminée');
+//                    }
+//                } catch (\Exception $e) {
+//                    $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "Partie non trouvé"));
+//                    return $response;
+//                }
+//            }
+
+        }
+    }
+
 
 }
