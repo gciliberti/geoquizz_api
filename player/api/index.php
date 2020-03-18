@@ -24,7 +24,7 @@ $app->add(function ($req, $res, $next) {
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
 
-
+$app->get('/leaderboard[/]', geoquizz\app\control\PartieController::class . ':leaderboard');
 $app->post('/partie[/]', geoquizz\app\control\PartieController::class . ':creerPartie');
 $app->get('/series[/]', geoquizz\app\control\SerieController::class . ':getSeries');
 $app->patch('/partie/{token}[/]', geoquizz\app\control\PartieController::class . ':updatePartie');
