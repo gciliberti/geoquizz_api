@@ -26,7 +26,7 @@ class PartieController
 
     public function leaderboard(Request $request, Response $response, $args)
     {
-        $parties = Partie::orderBy('score')->limit('10')->get();
+        $parties = Partie::orderBy('score','desc')->limit('10')->get();
         foreach ($parties as $partie) {
             unset($partie["id"]);
             unset($partie["token"]);
