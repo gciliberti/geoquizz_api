@@ -160,6 +160,10 @@ class Photocontroller
         if (isset($args['id_photo'])) {
             try {
                 $photo = Photo::query()->where('id', '=', $args['id_photo'])->firstOrFail();
+                if ($photo_serie = Photo_Serie::query()->where('photo_id', $args['id_photo'])->delete() == true) {
+                    $photo_serie = Photo_Serie::query()->where('photo_id', $args['id_photo'])->delete();
+                }
+
             } catch (\Exception $e) {
 
                 $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "Photo non trouvé"));
@@ -170,7 +174,7 @@ class Photocontroller
 
             $response->getBody()->write(json_encode([
                 "type" => "success",
-                "error" => 200,
+                "status" => 200,
                 "message" => "photo supprimé"
             ]));
             return $response;
@@ -186,6 +190,35 @@ class Photocontroller
 
         }
 
+        return $response;
+    }
+
+    public static function deletePhotoFromSerie(Request $request, Response $response, $args)
+    {
+        if (isset($args['id_serie'])) {
+            $body = $request->getParsedBody();
+
+
+            try {
+                foreach ($body['photos'] as $photo) {
+                    if ($photo_serie = Photo_Serie::query()->where('photo_id', '=', $photo)->where('serie_id', '=', $args['id_serie'])->delete() == false) {
+                        $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "La ou les photos sont introuvable"));
+                        return $response;
+                    } else {
+                        $photo_serie = Photo_Serie::query()->where('photo_id', '=', $photo)->where('serie_id', '=', $args['id_serie'])->delete();
+                    }
+
+                }
+
+            } catch (\Exception $e) {
+
+
+            }
+
+
+            $response = Writer::jsonResponse($response, 404, array("type" => 'success', "status" => 200, "message" => "Les photos ont été supprimé de la sériee"));
+            return $response;
+        }
         return $response;
     }
 

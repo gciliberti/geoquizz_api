@@ -51,7 +51,8 @@ $app->get('/photos[/]', \geoquizz\app\control\Photocontroller::class . ':getPhot
 $app->get('/photos/{id_serie}', \geoquizz\app\control\Photocontroller::class . ':getPhotosSerie');
 $app->post('/photo/serie[/]', \geoquizz\app\control\Photocontroller::class . ':postPhotosSerie');
 $app->post('/photos/photo[/]', \geoquizz\app\control\Photocontroller::class . ':postPhoto');
-$app->delete('/photo/{id_photo}', \geoquizz\app\control\Photocontroller::class . ':deletePhoto');
+$app->delete('/photo/{id_photo}[/]', \geoquizz\app\control\Photocontroller::class . ':deletePhoto');
+$app->delete('/photo/serie/{id_serie}[/]', \geoquizz\app\control\Photocontroller::class . ':deletePhotoFromSerie');
 
 
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($req, $res) {
