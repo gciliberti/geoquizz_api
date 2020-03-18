@@ -5,6 +5,8 @@ namespace geoquizz\app\control;
 use \Firebase\JWT\JWT;
 
 use geoquizz\app\model\Photo;
+use geoquizz\app\model\Photo_Serie;
+use geoquizz\app\model\Serie;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use geoquizz\app\utils\Writer;
@@ -30,6 +32,40 @@ class Photocontroller
         $response = Writer::jsonResponse($response, 200, $resparray);
     }
 
+
+    public static function getPhotosSerie(Request $request, Response $response, $args)
+    {
+        if (isset($args['id'])) {
+
+
+            try {
+
+                $serie = Serie::findOrFail($args["id"]);
+                $photos = $serie->photos()->get();
+                foreach ($photos as $photo) {
+                    unset($photo["pivot"]);
+                    unset($photo["created_at"]);
+                }
+
+                $resparray = [
+                    "photos" => $photos
+                ];
+
+                $response = Writer::jsonResponse($response, 200, $resparray);
+
+            } catch (\Exception $e) {
+                $resparray = array(
+                    "error" => 500,
+                    "message" => "L'identifiant transmis n'éxste pas",
+                );
+
+                $response = Writer::jsonResponse($response, 500, $resparray);
+            }
+
+
+        }
+
+    }
 
     public static function postPhoto(Request $request, Response $response, $args)
     {

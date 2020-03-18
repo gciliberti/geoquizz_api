@@ -12,4 +12,12 @@ class Serie extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     public $incrementing = false;
+
+    public function photos()
+    {
+        return $this->belongsToMany('geoquizz\app\model\Photo')
+            ->using('geoquizz\app\model\Photo_Serie');
+    }
+
+
 }
