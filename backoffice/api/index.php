@@ -47,12 +47,15 @@ $app->post('/series/serie[/]', geoquizz\app\control\SerieController::class . ':c
 $app->put('/series/serie/{id_serie}[/]', geoquizz\app\control\SerieController::class . ':updateSerie')->add(new Validation($updateSerieValidator));
 
 
-$app->get('/photos[/]', \geoquizz\app\control\Photocontroller::class . ':getPhotos');
-$app->get('/photos/{id_serie}', \geoquizz\app\control\Photocontroller::class . ':getPhotosSerie');
-$app->post('/photo/serie[/]', \geoquizz\app\control\Photocontroller::class . ':postPhotosSerie');
-$app->post('/photos/photo[/]', \geoquizz\app\control\Photocontroller::class . ':postPhoto');
-$app->delete('/photo/{id_photo}[/]', \geoquizz\app\control\Photocontroller::class . ':deletePhoto');
-$app->delete('/photo/serie/{id_serie}[/]', \geoquizz\app\control\Photocontroller::class . ':deletePhotoFromSerie');
+$app->get('/photos[/]', \geoquizz\app\control\PhotoController::class . ':getPhotos');
+$app->get('/photos/{id_serie}', \geoquizz\app\control\PhotoController::class . ':getPhotosSerie');
+$app->post('/photo/serie[/]', \geoquizz\app\control\PhotoController::class . ':postPhotosSerie');
+$app->post('/photos/photo[/]', \geoquizz\app\control\PhotoController::class . ':postPhoto');
+$app->delete('/photo/{id_photo}[/]', \geoquizz\app\control\PhotoController::class . ':deletePhoto');
+$app->delete('/photo/serie/{id_serie}[/]', \geoquizz\app\control\PhotoController::class . ':deletePhotoFromSerie');
+
+$app->get('/maps[/]', geoquizz\app\control\MapController::class . ':getMaps');
+$app->post('/maps[/]', geoquizz\app\control\MapController::class . ':addMap');
 
 
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($req, $res) {

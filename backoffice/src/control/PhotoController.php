@@ -14,7 +14,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 
-class Photocontroller
+class PhotoController
 {
     protected $container;
 
