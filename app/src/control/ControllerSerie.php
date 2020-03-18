@@ -53,7 +53,7 @@ class ControllerSerie
                 $serie = new serie();
                 $serie->id = Uuid::uuid4();
                 $serie->ville = filter_var($input['ville'], FILTER_SANITIZE_STRING);
-                $serie->map_refs = filter_var($input['map_refs'], FILTER_SANITIZE_NUMBER_INT);
+                $serie->map_refs = filter_var($input['map_refs'], FILTER_SANITIZE_STRING);
                 $serie->dist = filter_var($input['dist'], FILTER_SANITIZE_NUMBER_INT);
                 $serie->saveOrFail();
 
