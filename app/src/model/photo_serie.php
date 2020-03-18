@@ -3,7 +3,6 @@
 
 namespace geoquizz\app\model;
 
-
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class photo_serie extends Pivot

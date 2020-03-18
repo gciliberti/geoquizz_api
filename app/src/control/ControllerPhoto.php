@@ -1,16 +1,13 @@
 <?php
 namespace geoquizz\app\control;
 
-use \Firebase\JWT\JWT;
 use geoquizz\app\model\photo;
 use geoquizz\app\model\photo_serie;
 use geoquizz\app\utils\Writer;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
-class Controller {
+class ControllerPhoto {
     protected $container;
 
     public function __construct(\Slim\Container $container = null) {
@@ -32,8 +29,8 @@ class Controller {
 
             //On enregistre l'image dans la bdd avec l'url généré par cloudinary
             $photo = new photo();
-            $photo->desc = $input['description'];
-            $photo->position = $input['localisation'];
+            $photo->desc = filter_var($input['description'], FILTER_SANITIZE_STRING);
+            $photo->position = filter_var($input['localisation'], FILTER_SANITIZE_STRING);
             $photo->url = $arr_result['url'];
             $photo->saveOrFail();
 
@@ -72,8 +69,8 @@ class Controller {
 
                 //On enregistre l'image dans la bdd avec l'url généré par cloudinary
                 $photoSerie = new photo_serie();
-                $photoSerie->photo_id = $input['photo_id'];
-                $photoSerie->serie_id = $input['serie_id'];
+                $photoSerie->photo_id = filter_var($input['photo_id'], FILTER_SANITIZE_NUMBER_INT);
+                $photoSerie->serie_id = filter_var($input['serie_id'], FILTER_SANITIZE_STRING);
                 $photoSerie->saveOrFail();
 
                 $element = [
