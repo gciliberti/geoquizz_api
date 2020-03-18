@@ -59,8 +59,8 @@ class ControllerMap
                 $arr_result = \Cloudinary\Uploader::upload($img);
 
                 $map = new map();
-                $map->lat = filter_var($input['lat'], FILTER_SANITIZE_NUMBER_FLOAT);
-                $map->lng = filter_var($input['lng'], FILTER_SANITIZE_NUMBER_FLOAT);
+                $map->lat = filter_var($input['lat'], FILTER_SANITIZE_STRING);
+                $map->lng = filter_var($input['lng'], FILTER_SANITIZE_STRING);
                 $map->zoom = filter_var($input['zoom'], FILTER_SANITIZE_NUMBER_INT);
                 $map->ville = filter_var($input['ville'], FILTER_SANITIZE_STRING);
                 $map->miniature = $arr_result['url'];
@@ -91,5 +91,6 @@ class ControllerMap
                 "message" => "Au moins un champ n'a pas été rempli."
             ]));
         }
+        return $response;
     }
 }
