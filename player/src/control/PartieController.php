@@ -3,6 +3,7 @@
 namespace geoquizz\app\control;
 
 use geoquizz\app\model\Serie;
+use mysql_xdevapi\Exception;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use geoquizz\app\model\Partie;
@@ -29,10 +30,10 @@ class PartieController
 
             $contenu = $request->getParsedBody();
             $serie = Serie::findOrFail($contenu["serie"]);
-            $photos = $serie->photos()->get();
+            $photos = $serie->photos()->inRandomOrder()->take(10)->get();
             $partie = new Partie();
             $partie->token = Writer::generateToken();
-            $partie->nb_photos = 0;
+            $partie->nb_photos = 10;
             $partie->status = self::EN_COURS;
             $partie->score = 0;
             $partie->joueur = $contenu["pseudo"];
@@ -47,6 +48,7 @@ class PartieController
 
             $resparray = array(
                 "id" => $partie->id,
+                "nb_photos" => $partie->nb_photos,
                 "token" => $partie->token,
                 "status" => $partie->status,
                 "photos" => $photos,
@@ -81,13 +83,16 @@ class PartieController
 
         if(isset($input["id"]) && isset($input["score"]) && $args["token"] == $partie->token){
             try{
+                if($partie->status == self::EN_COURS){
+                    $partie->score = $input["score"];
+                    $partie->status = self::TERMINEE;
+                    $partie->saveOrFail();
 
-                $partie->score = $input["score"];
-                $partie->status = self::TERMINEE;
-                $partie->saveOrFail();
-
-                $response = Writer::jsonResponse($response, 204,array("error"=>404,"message"=>"Partie non trouvé"));
-                return $response;
+                    $response = Writer::jsonResponse($response, 204,array("error"=>204,"message"=>"Score sauvegardé"));
+                    return $response;
+                } else {
+                    throw new Exception('Partie terminée');
+                }
             } catch (\Exception $e){
                 $response = Writer::jsonResponse($response, 404,array("error"=>404,"message"=>"Partie non trouvé"));
                 return $response;
