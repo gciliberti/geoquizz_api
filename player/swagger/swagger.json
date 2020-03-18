@@ -1,0 +1,49 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "GeoQuizz API PLAYER",
+        "version": "0.1"
+    },
+    "servers": [
+        {
+            "url": "https://api.tallium.tech/player/api/index.php",
+            "description": "Api pour le player"
+        }
+    ],
+    "paths": {
+        "/series": {
+            "get": {
+                "operationId": "geoquizz\\app\\control\\SerieController::getSeries",
+                "responses": {
+                    "200": {
+                        "description": "Récupérer les séries, ainsi que les maprefs associés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Serie"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Serie": {
+                "properties": {
+                    "id": {
+                        "description": "id de l'event",
+                        "type": "string",
+                        "example": "bf9drea3-35c6-34f3-bc09-fd085fb34119"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

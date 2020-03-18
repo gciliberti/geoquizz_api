@@ -24,6 +24,23 @@ class PartieController
         $this->container = $container;
     }
 
+    public function leaderboard(Request $request, Response $response, $args)
+    {
+        $parties = Partie::orderBy('score')->limit('10')->get();
+        foreach ($parties as $partie) {
+            unset($partie["id"]);
+            unset($partie["token"]);
+            unset($partie["nb_photos"]);
+            unset($partie["status"]);
+        }
+
+        $resparray = array(
+            "scores" => $parties,
+        );
+        $response = Writer::jsonResponse($response, 200, $resparray);
+        return $response;
+    }
+
     public function creerPartie(Request $request, Response $response, $args)
     {
         try {
@@ -74,27 +91,27 @@ class PartieController
     {
         $input = $request->getParsedBody();
 
-        try{
-            $partie = Partie::query()->where('id','=',$input["id"])->firstOrFail();
-        } catch (\Exception $e){
-            $response = Writer::jsonResponse($response, 404,array("error"=>404,"message"=>"Partie non trouvé"));
+        try {
+            $partie = Partie::query()->where('id', '=', $input["id"])->firstOrFail();
+        } catch (\Exception $e) {
+            $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "Partie non trouvé"));
             return $response;
         }
 
-        if(isset($input["id"]) && isset($input["score"]) && $args["token"] == $partie->token){
-            try{
-                if($partie->status == self::EN_COURS){
+        if (isset($input["id"]) && isset($input["score"]) && $args["token"] == $partie->token) {
+            try {
+                if ($partie->status == self::EN_COURS) {
                     $partie->score = $input["score"];
                     $partie->status = self::TERMINEE;
                     $partie->saveOrFail();
 
-                    $response = Writer::jsonResponse($response, 204,array("error"=>204,"message"=>"Score sauvegardé"));
+                    $response = Writer::jsonResponse($response, 204, array("error" => 204, "message" => "Score sauvegardé"));
                     return $response;
                 } else {
                     throw new Exception('Partie terminée');
                 }
-            } catch (\Exception $e){
-                $response = Writer::jsonResponse($response, 404,array("error"=>404,"message"=>"Partie non trouvé"));
+            } catch (\Exception $e) {
+                $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "Partie non trouvé"));
                 return $response;
             }
         }
