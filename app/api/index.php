@@ -24,6 +24,8 @@ $app->get('/series[/]', geoquizz\app\control\ControllerSerie::class . ':getSerie
 
 $app->post('/series[/]', geoquizz\app\control\ControllerSerie::class . ':addSerie');
 
+$app->get('/maps[/]', geoquizz\app\control\ControllerMap::class . ':getMaps');
 
+$app->post('/maps[/]', geoquizz\app\control\ControllerMap::class . ':addMap');
 
 $app->run();
