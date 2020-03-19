@@ -19,6 +19,14 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
     "secret" => getenv("JWT_SECRET"),
 ]));
 
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+});
+
 $app->post('/login[/]', geoquizz\app\control\ControllerUser::class . ':login');
 
 $app->post('/register[/]', geoquizz\app\control\ControllerUser::class . ':register');
@@ -34,5 +42,10 @@ $app->post('/series[/]', geoquizz\app\control\ControllerSerie::class . ':addSeri
 $app->get('/maps[/]', geoquizz\app\control\ControllerMap::class . ':getMaps');
 
 $app->post('/maps[/]', geoquizz\app\control\ControllerMap::class . ':addMap');
+
+$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
+    $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
+    return $handler($req, $res);
+});
 
 $app->run();
