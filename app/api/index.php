@@ -3,7 +3,8 @@ require_once "../src/vendor/autoload.php";
 
 use DavidePastore\Slim\Validation\Validation;
 use geoquizz\app\database\DatabaseConnection;
-
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__."/../src");
+$dotenv->load();
 $settings = require_once "../conf/settings.php";
 $errorsHandlers = require_once "../conf/errorsHandlers.php";
 $app_config = array_merge($settings, $errorsHandlers);
@@ -12,9 +13,15 @@ $container = new \Slim\Container($app_config);
 $app = new \Slim\App($container);
 
 DatabaseConnection::startEloquent(($app->getContainer())->settings['dbconf']);
-/**Exemple
-$app->get('/commandes[/]', lbs\command\control\PartieController::class . ':getCommands');
-**/
+
+$app->add(new Tuupola\Middleware\JwtAuthentication([
+    "ignore" => ["/login", "/register"],
+    "secret" => getenv("JWT_SECRET"),
+]));
+
+$app->post('/login[/]', geoquizz\app\control\ControllerUser::class . ':login');
+
+$app->post('/register[/]', geoquizz\app\control\ControllerUser::class . ':register');
 
 $app->post('/photo[/]', geoquizz\app\control\ControllerPhoto::class . ':addPhoto');
 

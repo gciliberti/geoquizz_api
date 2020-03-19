@@ -35,6 +35,9 @@
     "components": {
         "schemas": {
             "Serie": {
+                "required": [
+                    "series"
+                ],
                 "properties": {
                     "id": {
                         "description": "id de l'event",

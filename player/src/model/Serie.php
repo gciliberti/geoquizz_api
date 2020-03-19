@@ -7,7 +7,7 @@ namespace geoquizz\app\model;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @OA\Schema()
+ * @OA\Schema(type="object",required={ "series"})
  */
 class Serie extends Model
 {
@@ -18,7 +18,9 @@ class Serie extends Model
      *     description="id de l'event",
      *     example="bf9drea3-35c6-34f3-bc09-fd085fb34119"
      * )
+     *
      */
+
     protected $table = 'serie';
     protected $primaryKey = 'id';
     public $timestamps = false;

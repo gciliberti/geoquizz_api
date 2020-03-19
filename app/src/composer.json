@@ -9,7 +9,9 @@
         "nesbot/carbon": "^2.29.1",
         "firebase/php-jwt": "^5.0",
         "davidepastore/slim-validation": "^0.5.1",
-        "cloudinary/cloudinary_php": "^1.16"
+        "cloudinary/cloudinary_php": "^1.16",
+        "tuupola/slim-jwt-auth": "^3.4",
+        "vlucas/phpdotenv": "^4.1"
     },
     "autoload": {
         "psr-4" : {

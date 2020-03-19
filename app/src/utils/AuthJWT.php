@@ -4,14 +4,9 @@
 namespace geoquizz\app\utils;
 use lbs\command\model\Client;
 
-use\Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
-use \Firebase\JWT\JWT;
-use \Firebase\JWT\ExpiredException;
-use \Firebase\JWT\SignatureInvalidException;
-use \Firebase\JWT\BeforeValidException;
+
 use lbs\command\utils\Writer;
-use \DomainException;
+
 
 
 class AuthJWT
