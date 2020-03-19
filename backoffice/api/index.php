@@ -11,6 +11,8 @@ use \DavidePastore\Slim\Validation\Validation as Validation;
 $settings = require_once "../conf/settings.php";
 $errorsHandlers = require_once "../conf/errorsHandlers.php";
 $app_config = array_merge($settings, $errorsHandlers);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__."/../src");
+$dotenv->load();
 
 $container = new \Slim\Container($app_config);
 $app = new \Slim\App($container);
@@ -41,6 +43,15 @@ $app->add(function ($req, $res, $next) {
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
+
+$app->add(new Tuupola\Middleware\JwtAuthentication([
+    "ignore" => ["/login", "/register"],
+    "secret" => getenv("JWT_SECRET"),
+]));
+
+$app->post('/login[/]', geoquizz\app\control\ControllerUser::class . ':login');
+
+$app->post('/register[/]', geoquizz\app\control\ControllerUser::class . ':register');
 
 $app->get('/series[/]', geoquizz\app\control\SerieController::class . ':getSeries');
 $app->post('/series/serie[/]', geoquizz\app\control\SerieController::class . ':createSerie')->add(new Validation($postSerieValidator));
