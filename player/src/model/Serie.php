@@ -30,4 +30,8 @@ class Serie extends Model
         return $this->belongsToMany('geoquizz\app\model\Photo')
             ->using('geoquizz\app\model\Photo_Serie');
     }
+
+    public function map(){
+        return $this->hasOne('geoquizz\app\model\Map','id','map_refs');
+    }
 }

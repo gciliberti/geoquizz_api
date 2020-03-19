@@ -47,10 +47,10 @@ class PartieController
 
             $contenu = $request->getParsedBody();
             $serie = Serie::findOrFail($contenu["serie"]);
-            $photos = $serie->photos()->inRandomOrder()->take(10)->get();
+            $photos = $serie->photos()->inRandomOrder()->get();
             $partie = new Partie();
             $partie->token = Writer::generateToken();
-            $partie->nb_photos = 10;
+            $partie->nb_photos = count($photos);
             $partie->status = self::EN_COURS;
             $partie->score = 0;
             $partie->joueur = $contenu["pseudo"];
@@ -68,6 +68,7 @@ class PartieController
                 "nb_photos" => $partie->nb_photos,
                 "token" => $partie->token,
                 "status" => $partie->status,
+                "map"=>$serie->map()->get(),
                 "photos" => $photos,
             );
 
