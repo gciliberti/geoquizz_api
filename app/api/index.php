@@ -14,11 +14,6 @@ $app = new \Slim\App($container);
 
 DatabaseConnection::startEloquent(($app->getContainer())->settings['dbconf']);
 
-$app->add(new Tuupola\Middleware\JwtAuthentication([
-    "ignore" => ["/login", "/register"],
-    "secret" => getenv("JWT_SECRET"),
-]));
-
 $app->add(function ($req, $res, $next) {
     $response = $next($req, $res);
     return $response
@@ -26,6 +21,11 @@ $app->add(function ($req, $res, $next) {
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
+
+$app->add(new Tuupola\Middleware\JwtAuthentication([
+    "ignore" => ["/login", "/register"],
+    "secret" => getenv("JWT_SECRET"),
+]));
 
 $app->post('/login[/]', geoquizz\app\control\ControllerUser::class . ':login');
 
