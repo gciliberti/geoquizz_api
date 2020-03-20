@@ -29,9 +29,9 @@ $updateSerieValidator = [
 
 DatabaseConnection::startEloquent(($app->getContainer())->settings['dbconf']);
 
-$app->options('/{routes:.+}', function ($request, $response, $args) {
-    return $response;
-});
+//$app->options('/{routes:.+}', function ($request, $response, $args) {
+//    return $response;
+//});
 
 
 $app->add(function ($req, $res, $next) {

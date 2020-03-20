@@ -2,7 +2,7 @@
 
 namespace geoquizz\app\control;
 
-use geoquizz\app\model\map;
+use geoquizz\app\model\Map;
 use geoquizz\app\utils\Writer;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
