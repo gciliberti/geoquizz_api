@@ -29,7 +29,9 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
 
 $app->post('/login[/]', geoquizz\app\control\ControllerUser::class . ':login');
 
-$app->post('/register[/]', geoquizz\app\control\ControllerUser::class . ':register');
+$app->post('/register[/]', geoquizz\app\control\ControllerUser::class . ':register')
+    ->add(\geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($container->settings['validatorRegister']));
 
 $app->post('/photo[/]', geoquizz\app\control\ControllerPhoto::class . ':addPhoto');
 
