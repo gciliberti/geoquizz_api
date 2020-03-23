@@ -33,17 +33,25 @@ $app->post('/register[/]', geoquizz\app\control\ControllerUser::class . ':regist
     ->add(\geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
     ->add(new Validation($container->settings['validatorRegister']));
 
-$app->post('/photo[/]', geoquizz\app\control\ControllerPhoto::class . ':addPhoto');
+$app->post('/photo[/]', geoquizz\app\control\ControllerPhoto::class . ':addPhoto')
+    ->add(\geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($container->settings['validatorAddPhoto']));
 
-$app->post('/photo/serie[/]', geoquizz\app\control\ControllerPhoto::class . ':addPhotoSerie');
+$app->post('/photo/serie[/]', geoquizz\app\control\ControllerPhoto::class . ':addPhotoSerie')
+    ->add(\geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($container->settings['validatorlinkPhotoSeries']));
 
 $app->get('/series[/]', geoquizz\app\control\ControllerSerie::class . ':getSeries');
 
-$app->post('/series[/]', geoquizz\app\control\ControllerSerie::class . ':addSerie');
+$app->post('/series[/]', geoquizz\app\control\ControllerSerie::class . ':addSerie')
+    ->add(\geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($container->settings['validatorAddSeries']));
 
 $app->get('/maps[/]', geoquizz\app\control\ControllerMap::class . ':getMaps');
 
-$app->post('/maps[/]', geoquizz\app\control\ControllerMap::class . ':addMap');
+$app->post('/maps[/]', geoquizz\app\control\ControllerMap::class . ':addMap')
+    ->add(\geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($container->settings['validatorAddMap']));
 
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
     $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
