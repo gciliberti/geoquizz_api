@@ -56,6 +56,7 @@ $app->post('/register[/]', geoquizz\app\control\ControllerUser::class . ':regist
 $app->get('/series[/]', geoquizz\app\control\SerieController::class . ':getSeries');
 $app->post('/series/serie[/]', geoquizz\app\control\SerieController::class . ':createSerie')->add(new Validation($postSerieValidator));
 $app->put('/series/serie/{id_serie}[/]', geoquizz\app\control\SerieController::class . ':updateSerie')->add(new Validation($updateSerieValidator));
+$app->delete('/series/serie/{id_serie}[/]',geoquizz\app\control\SerieController::class . ':deleteSerie');
 
 
 $app->get('/photos[/]', \geoquizz\app\control\PhotoController::class . ':getPhotos');

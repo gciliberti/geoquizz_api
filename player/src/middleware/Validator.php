@@ -15,6 +15,7 @@ class Validator
                 "type" => "error",
                 "error" => 400,
                 "message" => "Parametres mal formes.",
+                "details" => $request->getAttribute('errors')
             ]);
         }
 

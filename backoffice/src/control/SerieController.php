@@ -156,5 +156,19 @@ class SerieController
         }
     }
 
+    public function deleteSerie(Request $request, Response $response, $args)
+    {
+        try {
+            $serie = Serie::findOrFail($args["id_serie"]);
+            $serie->delete();
+            $response = Writer::jsonResponse($response, 200, array("success" => 200, "message" => "Serie supprimée"));
+            return $response;
+
+        } catch (\Exception $e) {
+            $response = Writer::jsonResponse($response, 500, array("error" => 404, "message" => "Serie non existante"));
+            return $response;
+        }
+    }
+
 
 }

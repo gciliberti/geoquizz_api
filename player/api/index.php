@@ -1,7 +1,8 @@
 <?php
 require_once "../src/vendor/autoload.php";
 
-use DavidePastore\Slim\Validation\Validation;
+use \Respect\Validation\Validator as v;
+use \DavidePastore\Slim\Validation\Validation as Validation;
 use geoquizz\app\database\DatabaseConnection;
 
 $settings = require_once "../conf/settings.php";
@@ -24,12 +25,28 @@ $app->add(function ($req, $res, $next) {
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
 
-$app->get('/leaderboard[/]', geoquizz\app\control\PartieController::class . ':leaderboard');
-$app->post('/partie[/]', geoquizz\app\control\PartieController::class . ':creerPartie');
-$app->get('/series[/]', geoquizz\app\control\SerieController::class . ':getSeries');
-$app->patch('/partie/{token}[/]', geoquizz\app\control\PartieController::class . ':updatePartie');
+//validators
+$createPartyValidator = [
+    'pseudo' => v::stringType(),
+    'serie' => v::regex('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/'),
+];
 
-$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
+$updatePartyValidator = [
+    'id' => v::intVal(),
+    'score' => v::intVal(),
+];
+
+$app->get('/leaderboard[/]', geoquizz\app\control\PartieController::class . ':leaderboard');
+$app->post('/partie[/]', geoquizz\app\control\PartieController::class . ':creerPartie')
+    ->add( geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($createPartyValidator));
+
+$app->get('/series[/]', geoquizz\app\control\SerieController::class . ':getSeries');
+$app->patch('/partie/{token}[/]', geoquizz\app\control\PartieController::class . ':updatePartie')
+    ->add( geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($updatePartyValidator));
+
+$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($req, $res) {
     $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
     return $handler($req, $res);
 });
