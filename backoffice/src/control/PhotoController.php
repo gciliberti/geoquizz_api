@@ -40,7 +40,7 @@ class PhotoController
 
             try {
 
-                $serie = Serie::query()->findOrFail($args["id_serie"]);
+                $serie = Serie::query()->where('id', '=', $args['id_serie'])->firstOrFail();
                 $photos = $serie->photos()->get();
                 foreach ($photos as $photo) {
                     unset($photo["pivot"]);
