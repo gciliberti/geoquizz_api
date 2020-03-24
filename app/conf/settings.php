@@ -15,7 +15,7 @@ return [
         'validatorAddPhoto' => [
             'localisation' => Validator::alnum(", ."),
             'description' =>  Validator::alnum("é à è ù ô î â ï ë ö ü , : '"),
-            'photo' =>  Validator::regex('^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$^'),
+            'photo' =>  Validator::stringType(),//remplacer par base64() lors de la maj de Validator/Validate
         ],
         'validatorlinkPhotoSeries' => [
             'photo_id' => Validator::intVal(),
@@ -31,7 +31,7 @@ return [
             'lng' =>  Validator::numeric(),
             'zoom' =>  Validator::intVal()->positive(),
             'ville' =>  Validator::alpha("é à è ù ô î â ï ë ö ü '"),
-            'miniature' =>  Validator::regex('^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$^'),
+            'miniature' =>  Validator::stringType(),//remplacer par base64() lors de la maj de Validator/Validate
         ]
     ]
 ];
