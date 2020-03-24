@@ -200,15 +200,14 @@ class PhotoController
 
 
             try {
-                foreach ($body['photos'] as $photo) {
-                    if ($photo_serie = Photo_Serie::query()->where('photo_id', '=', $photo)->where('serie_id', '=', $args['id_serie'])->delete() == false) {
+                    if ($photo_serie = Photo_Serie::query()->where('photo_id', '=', $body['photo_id'])->where('serie_id', '=', $args['id_serie'])->delete() == false) {
                         $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "La ou les photos sont introuvable"));
                         return $response;
                     } else {
-                        $photo_serie = Photo_Serie::query()->where('photo_id', '=', $photo)->where('serie_id', '=', $args['id_serie'])->delete();
+                        $photo_serie = Photo_Serie::query()->where('photo_id', '=', $body['photo_id'])->where('serie_id', '=', $args['id_serie'])->delete();
                     }
 
-                }
+               
 
             } catch (\Exception $e) {
 
