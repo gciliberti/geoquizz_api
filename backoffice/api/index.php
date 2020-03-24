@@ -72,7 +72,7 @@ $app->post('/photos/photo[/]', \geoquizz\app\control\PhotoController::class . ':
     ->add(new Validation($container->settings['postPhotoValidator']));
 
 $app->delete('/photo/{id_photo}[/]', \geoquizz\app\control\PhotoController::class . ':deletePhoto');
-$app->delete('/photo/serie/{id_serie}[/]', \geoquizz\app\control\PhotoController::class . ':deletePhotoFromSerie');
+$app->delete('/photo/serie/{id_serie}/{id_photo}[/]', \geoquizz\app\control\PhotoController::class . ':deletePhotoFromSerie');
 
 $app->get('/maps[/]', geoquizz\app\control\MapController::class . ':getMaps');
 $app->post('/maps[/]', geoquizz\app\control\MapController::class . ':addMap');
