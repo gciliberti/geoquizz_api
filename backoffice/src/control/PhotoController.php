@@ -195,29 +195,21 @@ class PhotoController
 
     public static function deletePhotoFromSerie(Request $request, Response $response, $args)
     {
-        if (isset($args['id_serie'])) {
-            $body = $request->getParsedBody();
-
-
+         if (isset($args['id_serie']) && isset($args['id_photo'])) {
             try {
-                    if ($photo_serie = Photo_Serie::query()->where('photo_id', '=', $body['photo_id'])->where('serie_id', '=', $args['id_serie'])->delete() == false) {
-                        $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "La ou les photos sont introuvable"));
-                        return $response;
-                    } else {
-                        $photo_serie = Photo_Serie::query()->where('photo_id', '=', $body['photo_id'])->where('serie_id', '=', $args['id_serie'])->delete();
-                    }
-
-               
-
+                if ($photo_serie = Photo_Serie::query()->where('photo_id', '=', $args['id_photo'])->where('serie_id', '=', $args['id_serie'])->delete() == false) {
+                    $response = Writer::jsonResponse($response, 404, array("error" => 404, "message" => "La ou les photos sont introuvable"));
+                    return $response;
+                } else {
+                    $photo_serie = Photo_Serie::query()->where('photo_id', '=', $args['id_photo'])->where('serie_id', '=', $args['id_serie'])->delete();
+                }
             } catch (\Exception $e) {
-
-
+                $response = Writer::jsonResponse($response, 404, array("type" => 'success', "status" => 200, "message" => "Veuillez transmettre l'identifiant d'une série ainsi que l'identifiant d'une photo"));
             }
-
-
-            $response = Writer::jsonResponse($response, 200, array("type" => 'success', "status" => 200, "message" => "Les photos ont été supprimé de la sériee"));
+            $response = Writer::jsonResponse($response, 404, array("type" => 'success', "status" => 200, "message" => "La photoa a été supprimé de la série"));
             return $response;
         }
+
         return $response;
     }
 
