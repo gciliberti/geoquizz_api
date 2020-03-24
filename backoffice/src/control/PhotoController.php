@@ -206,7 +206,7 @@ class PhotoController
             } catch (\Exception $e) {
                 $response = Writer::jsonResponse($response, 404, array("type" => 'success', "status" => 200, "message" => "Veuillez transmettre l'identifiant d'une série ainsi que l'identifiant d'une photo"));
             }
-            $response = Writer::jsonResponse($response, 404, array("type" => 'success', "status" => 200, "message" => "La photoa a été supprimé de la série"));
+            $response = Writer::jsonResponse($response, 200, array("type" => 'success', "status" => 200, "message" => "La photoa a été supprimé de la série"));
             return $response;
         }
 
