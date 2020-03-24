@@ -11,23 +11,11 @@ use \DavidePastore\Slim\Validation\Validation as Validation;
 $settings = require_once "../conf/settings.php";
 $errorsHandlers = require_once "../conf/errorsHandlers.php";
 $app_config = array_merge($settings, $errorsHandlers);
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__."/../src");
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../src");
 $dotenv->load();
 
 $container = new \Slim\Container($app_config);
 $app = new \Slim\App($container);
-$postSerieValidator = [
-    'ville' => v::stringType(),
-    'map_refs' => v::numeric(),
-    'dist' => v::numeric()->length(1, 1),
-    "photos" => v::arrayType()
-];
-
-$updateSerieValidator = [
-    'ville' => v::stringType()->alpha(),
-    'map_refs' => v::optional(v::numeric()),
-    'dist' => v::numeric()->length(1, 1),
-];
 
 DatabaseConnection::startEloquent(($app->getContainer())->settings['dbconf']);
 
@@ -51,18 +39,38 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
 
 $app->post('/login[/]', geoquizz\app\control\ControllerUser::class . ':login');
 
-$app->post('/register[/]', geoquizz\app\control\ControllerUser::class . ':register');
+$app->post('/register[/]', geoquizz\app\control\ControllerUser::class . ':register')
+    ->add(geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($container->settings['validatorRegister']));
 
 $app->get('/series[/]', geoquizz\app\control\SerieController::class . ':getSeries');
-$app->post('/series/serie[/]', geoquizz\app\control\SerieController::class . ':createSerie')->add(new Validation($postSerieValidator));
-$app->put('/series/serie/{id_serie}[/]', geoquizz\app\control\SerieController::class . ':updateSerie')->add(new Validation($updateSerieValidator));
-$app->delete('/series/serie/{id_serie}[/]',geoquizz\app\control\SerieController::class . ':deleteSerie');
+
+$app->post('/series/serie[/]', geoquizz\app\control\SerieController::class . ':createSerie')
+    ->add(geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($container->settings['postSerieValidator']));
+
+$app->put('/series/serie/{id_serie}[/]', geoquizz\app\control\SerieController::class . ':updateSerie')
+    ->add(geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($container->settings['updateSerieValidator']));
+
+$app->delete('/series/serie/{id_serie}[/]', geoquizz\app\control\SerieController::class . ':deleteSerie')
+    ->add(geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation(array('id_serie' => $container->settings['deleteSerieValidator'])));
 
 
 $app->get('/photos[/]', \geoquizz\app\control\PhotoController::class . ':getPhotos');
-$app->get('/photos/{id_serie}', \geoquizz\app\control\PhotoController::class . ':getPhotosSerie');
-$app->post('/photo/serie[/]', \geoquizz\app\control\PhotoController::class . ':postPhotosSerie');
-$app->post('/photos/photo[/]', \geoquizz\app\control\PhotoController::class . ':postPhoto');
+$app->get('/photos/{id_serie}', \geoquizz\app\control\PhotoController::class . ':getPhotosSerie')
+    ->add(geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation(array('id_serie' => $container->settings['deleteSerieValidator'])));
+
+$app->post('/photo/serie[/]', \geoquizz\app\control\PhotoController::class . ':postPhotosSerie')
+    ->add(geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($container->settings['photoSerieValidator']));
+
+$app->post('/photos/photo[/]', \geoquizz\app\control\PhotoController::class . ':postPhoto')
+    ->add(geoquizz\app\middleware\Validator::class . ":dataFormatErrorHandler")
+    ->add(new Validation($container->settings['postPhotoValidator']));
+
 $app->delete('/photo/{id_photo}[/]', \geoquizz\app\control\PhotoController::class . ':deletePhoto');
 $app->delete('/photo/serie/{id_serie}[/]', \geoquizz\app\control\PhotoController::class . ':deletePhotoFromSerie');
 
@@ -70,7 +78,7 @@ $app->get('/maps[/]', geoquizz\app\control\MapController::class . ':getMaps');
 $app->post('/maps[/]', geoquizz\app\control\MapController::class . ':addMap');
 
 
-$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
+$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($req, $res) {
     $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
     return $handler($req, $res);
 });

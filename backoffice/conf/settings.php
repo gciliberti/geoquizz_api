@@ -5,18 +5,33 @@ return [
     'settings' => [
         'displayErrorDetails' => true,
         'dbconf' => '../conf/config.ini',
-        'validatorAddCommand' => [
-            'nom' => Validator::alpha("é à è ù ô î â ï ë ö"),
+        'validatorRegister' => [
+            'nom' => Validator::alpha("é à è ù ô î â ï ë ö ü"),
+            'prenom' =>  Validator::alpha("é à è ù ô î â ï ë ö ü"),
             'mail' =>  Validator::email(),
-            'livraison' => [
-                'date' => Validator::date('d-m-Y')->min('now'),
-                'heure' => Validator::date('H:i:s')
-            ],
-            'client_id' => Validator::optional(Validator::intVal()),
-            'items' => [
-                //'uri' => Validator::alnum('/'),
-                //'q' => Validator::numeric()
-            ]
+            'motdepasse' =>  Validator::stringType()->length(4, null),
+            'telephone' =>  Validator::phone(),
+        ],
+        'postSerieValidator' => [
+            'ville' => Validator::stringType(),
+            'map_refs' => Validator::numeric(),
+            'dist' => Validator::numeric()->length(1, 1),
+            "photos" => Validator::arrayType()
+        ],
+        'updateSerieValidator'=> [
+            'ville' => Validator::stringType()->alpha(),
+            'map_refs' => Validator::optional(Validator::numeric()),
+            'dist' => Validator::numeric()->length(1, 1),
+        ],
+        'deleteSerieValidator'=> Validator::regex('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/'),
+        'photoSerieValidator'=>[
+            "photo_id" =>Validator::intVal(),
+            "serie_id" =>Validator::regex('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/')
+        ],
+        'postPhotoValidator'=>[
+            "photo"=> Validator::regex('^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$^'),
+            "description"=> Validator::alnum("é à è ù ô î â ï ë ö ü , : '"),
+            "localisation"=> Validator::alnum(", ."),
         ]
     ]
 ];
