@@ -215,7 +215,7 @@ class PhotoController
             }
 
 
-            $response = Writer::jsonResponse($response, 404, array("type" => 'success', "status" => 200, "message" => "Les photos ont été supprimé de la sériee"));
+            $response = Writer::jsonResponse($response, 200, array("type" => 'success', "status" => 200, "message" => "Les photos ont été supprimé de la sériee"));
             return $response;
         }
         return $response;
