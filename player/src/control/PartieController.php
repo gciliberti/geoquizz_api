@@ -70,6 +70,7 @@ class PartieController
                 "status" => $partie->status,
                 "map"=>$serie->map()->get(),
                 "photos" => $photos,
+                "serie" => $serie,
             );
 
             $response = Writer::jsonResponse($response, 201, $resparray);
