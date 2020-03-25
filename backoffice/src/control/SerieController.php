@@ -62,6 +62,7 @@ class SerieController
             $serie->ville = filter_var($body['ville'], FILTER_SANITIZE_STRING);
             $serie->map_refs = filter_var($body['map_refs'], FILTER_SANITIZE_NUMBER_INT);
             $serie->dist = filter_var($body['dist'], FILTER_SANITIZE_NUMBER_INT);
+            $serie->photos_jouables = filter_var($body['photos_jouables'], FILTER_SANITIZE_NUMBER_INT);
             $serie->save();
 
             if (isset($serie)) {

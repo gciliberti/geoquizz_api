@@ -16,7 +16,8 @@ return [
             'ville' => Validator::stringType(),
             'map_refs' => Validator::numeric(),
             'dist' => Validator::numeric()->length(1, 1),
-            "photos" => Validator::arrayType()
+            "photos" => Validator::arrayType(),
+            'photos_jouables' => Validator::numeric(),
         ],
         'updateSerieValidator'=> [
             'ville' => Validator::stringType()->alpha(),
