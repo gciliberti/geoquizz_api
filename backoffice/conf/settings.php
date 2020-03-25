@@ -30,7 +30,7 @@ return [
             "serie_id" =>Validator::regex('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/')
         ],
         'postPhotoValidator'=>[
-            "photo"=> Validator::regex('^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$^'),
+            "photo"=> Validator::stringType(),
             "description"=> Validator::alnum("é à è ù ô î â ï ë ö ü , : '"),
             "localisation"=> Validator::alnum(", ."),
         ]
