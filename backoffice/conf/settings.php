@@ -17,7 +17,7 @@ return [
             'map_refs' => Validator::numeric(),
             'dist' => Validator::numeric()->length(1, 1),
             "photos" => Validator::arrayType(),
-            'photos_jouables' => Validator::intVal(),
+            'photos_jouables' => Validator::stringType(),
         ],
         'updateSerieValidator'=> [
             'ville' => Validator::stringType()->alpha(),
@@ -31,7 +31,7 @@ return [
         ],
         'postPhotoValidator'=>[
             "photo"=> Validator::stringType(),
-            "description"=> Validator::alnum("é à è ù ô î â ï ë ö ü , : '"),
+            "description"=> Validator::alnum("é à è ù ô î â ï ë ö ü , : ) ( '"),
             "localisation"=> Validator::alnum(", ."),
         ]
     ]
