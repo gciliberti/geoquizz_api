@@ -76,6 +76,7 @@ $app->delete('/photo/serie/{id_serie}/{id_photo}[/]', \geoquizz\app\control\Phot
 
 $app->get('/maps[/]', geoquizz\app\control\MapController::class . ':getMaps');
 $app->post('/maps[/]', geoquizz\app\control\MapController::class . ':addMap');
+$app->delete('/maps/map/{id_map}[/]', geoquizz\app\control\MapController::class . ':deleteMap');
 
 
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($req, $res) {

@@ -95,4 +95,16 @@ class MapController
         }
         return $response;
     }
+    public function deleteMap(Request $request, Response $response, $args){
+        try {
+            $map = Map::findOrFail($args["id_map"]);
+            $map->delete();
+            $response = Writer::jsonResponse($response, 200, array("success" => 200, "message" => "Map supprimée"));
+            return $response;
+
+        } catch (\Exception $e) {
+            $response = Writer::jsonResponse($response, 500, array("error" => 404, "message" => "Map inexistante"));
+            return $response;
+        }
+    }
 }
