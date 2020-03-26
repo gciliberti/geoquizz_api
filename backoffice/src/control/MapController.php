@@ -59,7 +59,7 @@ class MapController
                 ));
                 
                 $imageUrl = file_get_contents($input['miniature']);
-                $img = 'data:image/jpeg;base64,' . base64_encode($image);
+                $img = 'data:image/jpeg;base64,' . base64_encode($imageUrl);
                 $arr_result = \Cloudinary\Uploader::upload($img);
 
                 $map = new Map();
