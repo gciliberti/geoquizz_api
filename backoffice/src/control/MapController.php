@@ -98,6 +98,8 @@ class MapController
     public function deleteMap(Request $request, Response $response, $args){
         try {
             $map = Map::findOrFail($args["id_map"]);
+            $series = $map->series();
+            $series->delete();
             $map->delete();
             $response = Writer::jsonResponse($response, 200, array("success" => 200, "message" => "Map supprimée"));
             return $response;

@@ -13,4 +13,8 @@ class Map extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     public $incrementing = true;
+
+    public function series(){
+        return $this->hasMany('geoquizz\app\model\Serie','map_refs','id');
+    }
 }
