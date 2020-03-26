@@ -57,7 +57,9 @@ class MapController
                     "api_key" => '325992955685386',
                     "api_secret" => 'RA9RUeFJl0ulqII22HSdavdDsgc'
                 ));
-                $img = "data:image/jpeg;base64," . $input['miniature'];
+                
+                $imageUrl = file_get_contents($input['miniature']);
+                $img = 'data:image/jpeg;base64,' . base64_encode($image);
                 $arr_result = \Cloudinary\Uploader::upload($img);
 
                 $map = new Map();
