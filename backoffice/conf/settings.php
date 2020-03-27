@@ -6,8 +6,8 @@ return [
         'displayErrorDetails' => true,
         'dbconf' => '../conf/config.ini',
         'validatorRegister' => [
-            'nom' => Validator::alpha("é à è ù ô î â ï ë ö ü"),
-            'prenom' =>  Validator::alpha("é à è ù ô î â ï ë ö ü"),
+            'nom' => Validator::alpha("é à è ù ô î â ï ë ö ü - "),
+            'prenom' =>  Validator::alpha("é à è ù ô î â ï ë ö ü - "),
             'mail' =>  Validator::email(),
             'motdepasse' =>  Validator::stringType()->length(4, null),
             'telephone' =>  Validator::phone(),
@@ -31,7 +31,7 @@ return [
         ],
         'postPhotoValidator'=>[
             "photo"=> Validator::stringType(),
-            "description"=> Validator::alnum("é à è ù ô î â ï ë ö ü , : ) ( '"),
+            "description"=> Validator::stringType(),
             "localisation"=> Validator::alnum(", ."),
         ]
     ]
